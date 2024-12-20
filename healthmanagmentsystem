@@ -1,0 +1,132 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class HealthManagementSystemGUI {
+    private HealthSystemManager manager;
+
+    public HealthManagementSystemGUI() {
+        manager = new HealthSystemManager();
+        manager.addDoctor("DOC001", "Dr. Smith", "Cardiology");
+        initComponents();
+    }
+
+    private void initComponents() {
+        JFrame frame = new JFrame("E-Health Management System");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 1, 10, 10));
+
+        JButton btnRegisterPatient = new JButton("Register Patient");
+        JButton btnViewPatients = new JButton("View Patients");
+        JButton btnScheduleAppointment = new JButton("Schedule Appointment");
+        JButton btnAdmitPatient = new JButton("Admit Patient");
+        JButton btnViewDoctors = new JButton("View Doctors");
+        JButton btnExit = new JButton("Exit");
+
+        panel.add(btnRegisterPatient);
+        panel.add(btnViewPatients);
+        panel.add(btnScheduleAppointment);
+        panel.add(btnAdmitPatient);
+        panel.add(btnViewDoctors);
+        panel.add(btnExit);
+
+        frame.add(panel);
+
+        // Register Patient Button
+        btnRegisterPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registerPatient();
+            }
+        });
+
+        // View Patients Button
+        btnViewPatients.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPatients();
+            }
+        });
+
+        // Schedule Appointment Button
+        btnScheduleAppointment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scheduleAppointment();
+            }
+        });
+
+        // Admit Patient Button
+        btnAdmitPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                admitPatient();
+            }
+        });
+
+        // View Doctors Button
+        btnViewDoctors.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewDoctors();
+            }
+        });
+
+        // Exit Button
+        btnExit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        frame.setVisible(true);
+    }
+
+    private void registerPatient() {
+        String id = JOptionPane.showInputDialog("Enter Patient ID:");
+        String name = JOptionPane.showInputDialog("Enter Patient Name:");
+        int age = Integer.parseInt(JOptionPane.showInputDialog("Enter Patient Age:"));
+        String medicalHistory = JOptionPane.showInputDialog("Enter Medical History:");
+        int type = JOptionPane.showConfirmDialog(null, "Is the patient an outpatient?", "Patient Type", JOptionPane.YES_NO_OPTION);
+        boolean isOutpatient = (type == JOptionPane.YES_OPTION);
+
+        manager.registerPatient(id, name, age, medicalHistory, isOutpatient);
+        JOptionPane.showMessageDialog(null, "Patient registered successfully!");
+    }
+
+    private void viewPatients() {
+        String patients = manager.viewPatients();
+        JTextArea textArea = new JTextArea(patients);
+        textArea.setEditable(false);
+        JOptionPane.showMessageDialog(null, new JScrollPane(textArea), "Patients", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void scheduleAppointment() {
+        String patientId = JOptionPane.showInputDialog("Enter Patient ID:");
+        String date = JOptionPane.showInputDialog("Enter Appointment Date (YYYY-MM-DD):");
+        manager.scheduleAppointment(patientId, date);
+        JOptionPane.showMessageDialog(null, "Appointment scheduled successfully!");
+    }
+
+    private void admitPatient() {
+        String inpatientId = JOptionPane.showInputDialog("Enter Patient ID:");
+        manager.admitPatient(inpatientId);
+        JOptionPane.showMessageDialog(null, "Patient admitted successfully!");
+    }
+
+    private void viewDoctors() {
+        String doctors = manager.viewDoctors();
+        JTextArea textArea = new JTextArea(doctors);
+        textArea.setEditable(false);
+        JOptionPane.showMessageDialog(null, new JScrollPane(textArea), "Doctors", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void main(String[] args) {
+        new HealthManagementSystemGUI();
+    }
+}
