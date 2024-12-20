@@ -1,0 +1,14 @@
+class Outpatient extends Patient {
+    public Outpatient(String id, String name, int age, String medicalHistory) {
+        super(id, name, age, medicalHistory);
+    }
+
+    public void scheduleAppointment(String date) {
+        System.out.println("Appointment scheduled for " + getName() + " on " + date);
+    }
+
+    @Override
+    public String getMedicalHistory() {
+        return super.getMedicalHistory() + " (Outpatient specific details)";
+}
+}
