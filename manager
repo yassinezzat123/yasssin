@@ -1,0 +1,69 @@
+import java.util.*;
+
+class HealthSystemManager {
+    private List<Patient> patients = new ArrayList<>();
+    private List<Doctor> doctors = new ArrayList<>();
+
+    public void registerPatient(String id, String name, int age, String medicalHistory, boolean isOutpatient) {
+        if (isOutpatient) {
+            patients.add(new Outpatient(id, name, age, medicalHistory));
+        } else {
+            patients.add(new Inpatient(id, name, age, medicalHistory));
+        }
+        System.out.println("Patient " + name + " registered successfully!");
+    }
+
+    public String viewPatients() {
+        if (patients.isEmpty()) {
+            return "No patients registered.";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Patient patient : patients) {
+            sb.append("ID: ").append(patient.getId())
+                    .append(", Name: ").append(patient.getName())
+                    .append(", Age: ").append(patient.getAge())
+                    .append(", Medical History: ").append(patient.getMedicalHistory())
+                    .append("\n");
+        }
+        return sb.toString();
+    }
+
+    public void scheduleAppointment(String patientId, String date) {
+        for (Patient patient : patients) {
+            if (patient.getId().equals(patientId) && patient instanceof Outpatient) {
+                ((Outpatient) patient).scheduleAppointment(date);
+                return;
+            }
+        }
+        System.out.println("Patient not found or is not an outpatient!");
+    }
+
+    public void admitPatient(String patientId) {
+        for (Patient patient : patients) {
+            if (patient.getId().equals(patientId) && patient instanceof Inpatient) {
+                ((Inpatient) patient).admitPatient();
+                return;
+            }
+        }
+        System.out.println("Patient not found or is not an inpatient!");
+    }
+
+    public String viewDoctors() {
+        if (doctors.isEmpty()) {
+            return "No doctors available.";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Doctor doctor : doctors) {
+            sb.append("ID: ").append(doctor.getId())
+                    .append(", Name: ").append(doctor.getName())
+                    .append(", Specialization: ").append(doctor.getSpecialization())
+                    .append("\n");
+        }
+        return sb.toString();
+    }
+
+    public void addDoctor(String id, String name, String specialization) {
+        doctors.add(new Doctor(id, name, specialization));
+        System.out.println("Doctor " + name + " added successfully!");
+    }
+}
