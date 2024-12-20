@@ -1,0 +1,14 @@
+class Inpatient extends Patient {
+    public Inpatient(String id, String name, int age, String medicalHistory) {
+        super(id, name, age, medicalHistory);
+    }
+
+    public void admitPatient() {
+        System.out.println("Patient " + getName() + " has been admitted.");
+    }
+
+    @Override
+    public String getMedicalHistory() {
+        return super.getMedicalHistory() + " (Inpatient specific details)";
+}
+}
